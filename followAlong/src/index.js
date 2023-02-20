@@ -39,16 +39,63 @@ const groceries = [
 ];
 
 class App extends React.Component {
+  // adding state like this 
+  constructor() {
+    super();
+    this.state = {
+      groceries: groceries
+    }
+
+  }
   // Class methods to update state
+
+  // create method & Item like this
+  addItem = (e, item) => {
+    // add preventDefault Important 
+    e.preventDefault(); 
+    // 
+    const newItem = {
+      name: item,
+      id: Date.now(),
+      purchased: false
+    }
+    // this will overwrite our whole state object 
+    this.setState({...this.state, groceries: [... this.state.groceries, newItem]});
+  }
+  // add toggle method to change purchased: to true
+ toggleItem = itemId =>
+ this.setState({...this.state, groceries: this.state.groceries.map(item => {
+  if (item.id === itemId){
+    return {...item, purchased: !item.purchased}
+  }
+  return item;
+ }) })
+
+//  create a clear purchased function or button like this here
+clearPurchased = () => {
+  this.setState({...this.state, groceries: this.state.groceries.filter(item => {
+    if (!item.purchased) return item;
+  })})
+}
+
+
   render() {
     return (
       <div className="App">
         <div className="header">
            <h1>Shopping List</h1>
-           <ListForm />
+           {/* add property here like this needs to point to addItem in the ={} */}
+           <ListForm addItem={this.addItem}     />
          </div>
-        <GroceryList groceries={groceries} />
-        <button className="clear-btn">Clear Purchased</button>
+         {/* groceries needs to point to state add in the ={} */}
+         {/* add toggleItem here and se it to the function */}
+         
+        <GroceryList  toggleItem={this.toggleItem} groceries={this.state.groceries} />
+        {/* add an onClick to the clearPurchased button to set the clear purchased button */}
+        <button onClick={this.clearPurchased} className="clear-btn">Clear Purchased</button>
+
+        {/* render component like this add here */}
+        {/* <button onClick={(e) => this.addItem(e, "orange")} >Add Orange</button> */}
        </div>
     );
   }

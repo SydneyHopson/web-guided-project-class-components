@@ -8,7 +8,8 @@ const GroceryList = props => {
   return (
     <div className="shopping-list">
       {props.groceries.map(item => (
-        <Item key={item.id} item={item} />
+        // add toggleItem property to item and set the props
+        <Item toggleItem={props.toggleItem} key={item.id} item={item} />
       ))}
     </div>
   );
